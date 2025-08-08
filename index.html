@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Ágil - SISA Tecidos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Estilos globais */
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --warning: #f72585;
+      --info: #560bad;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1, h2, h3, h4 {
+      color: var(--dark);
+      font-weight: 600;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 30px 0;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: white;
+    }
+    
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    /* Cards */
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .card i {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .card p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 0;
+    }
+    
+    /* Páginas internas */
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .page-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    /* Botão de voltar */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      margin: 20px 0 40px;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .back-button i {
+      margin-right: 8px;
+    }
+    
+    .back-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    }
+    
+    /* Quadro Scrum */
+    .board {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 30px;
+    }
+    
+    .column {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      padding: 25px;
+      width: 100%;
+      max-width: 280px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .column:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .column h2 {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .task {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      color: var(--dark);
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .task:hover {
+      background: #e9ecef;
+    }
+    
+    .highlight {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    /* Quadro Kanban */
+    .kanban-board {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 30px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+    
+    .kanban-column {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      min-width: 300px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .kanban-column:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .kanban-column h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      font-size: 1.3rem;
+    }
+    
+    .kanban-task {
+      background: #f8f9fa;
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: grab;
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--info);
+    }
+    
+    .kanban-task:hover {
+      background: #e9ecef;
+    }
+    
+    .kanban-task:active {
+      cursor: grabbing;
+    }
+    
+    /* Workshop */
+    .workshop-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .workshop-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .workshop-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+    
+    .activity {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .activity:hover {
+      background: #e9ecef;
+    }
+    
+    .activity h3 {
+      color: var(--secondary);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .activity h3 i {
+      margin-right: 10px;
+    }
+    
+    .activity p {
+      margin-left: 10px;
+    }
+    
+    /* Estudo de caso */
+    .section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .role {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .sprint {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--success);
+    }
+    
+    .sprint:hover {
+      background: #e9ecef;
+    }
+    
+    .sprint h3 {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .sprint h3 i {
+      margin-right: 10px;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .kanban-board {
+        flex-direction: column;
+      }
+      
+      .kanban-column {
+        min-width: 100%;
+      }
+      
+      .board {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .column {
+        max-width: 100%;
+      }
+    }
+    
+    /* Efeitos especiais */
+    .glow {
+      animation: glow 2s infinite alternate;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(67, 97, 238, 0.5);
+      }
+      to {
+        box-shadow: 0 0 20px rgba(67, 97, 238, 0.8);
+      }
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+    
+    .badge-primary {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+    
+    .badge-success {
+      background: rgba(76, 201, 240, 0.1);
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background: rgba(247, 37, 133, 0.1);
+      color: var(--warning);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Página inicial -->
+<div id="home-page" class="container">
+  <div class="header glow">
+    <h1><i class="fas fa-rocket"></i> Portal Ágil - SISA Tecidos</h1>
+    <p>Metodologias ágeis aplicadas à loja de tecidos em Aracaju/SE</p>
+  </div>
+
+  <div class="menu">
+    <div class="card" onclick="showPage('scrum-page')">
+      <i class="fas fa-puzzle-piece"></i>
+      <h2>Scrum</h2>
+      <p>Roteiro de implantação do Scrum para equipe da SISA Tecidos.</p>
+    </div>
+
+    <div class="card" onclick="showPage('kanban-page')">
+      <i class="fas fa-tasks"></i>
+      <h2>Kanban</h2>
+      <p>Quadro Kanban digital para gestão de estoque e pedidos.</p>
+    </div>
+
+    <div class="card" onclick="showPage('workshop-page')">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <h2>Workshop Ágil</h2>
+      <p>Treinamento prático em metodologias ágeis para a equipe.</p>
+    </div>
+
+    <div class="card" onclick="showPage('case-study-page')">
+      <i class="fas fa-book-open"></i>
+      <h2>Estudo de Caso</h2>
+      <p>Implantação do novo sistema de gestão na SISA usando Scrum.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Página Scrum -->
+<div id="scrum-page" class="page container">
+  <button class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> Voltar</button>
+  
+  <div class="page-header">
+    <h1><i class="fas fa-puzzle-piece"></i> Roteiro de Implantação do Scrum</h1>
+    <p>Metodologia ágil aplicada à SISA Tecidos</p>
+  </div>
+
+  <div class="board">
+    <!-- Etapa 1 -->
+    <div class="column">
+      <h2><span class="badge badge-primary">1</span> Preparação</h2>
+      <div class="task">✅ Treinar equipe no <span class="highlight">Scrum</span></div>
+      <div class="task">📌 Definir <span class="highlight">PO</span> (Gerente), <span class="highlight">SM</span> (Supervisor) e time</div>
+      <div class="task">🛠️ Configurar quadro físico na área de expedição</div>
+      <div class="task">📅 Planejar Sprint 0 para cadastro de produtos</div>
+    </div>
+
+    <!-- Etapa 2 -->
+    <div class="column">
+      <h2><span class="badge badge-primary">2</span> Backlog</h2>
+      <div class="task">📋 Levantar necessidades de gestão de estoque</div>
+      <div class="task">🧠 Criar <span class="highlight">Product Backlog</span> com prioridades</div>
+      <div class="task">✍️ Definir histórias para sistema de pedidos</div>
+      <div class="task">🎯 Focar em controle de tecidos mais vendidos</div>
+    </div>
+
+    <!-- Etapa 3 -->
+    <div class="column">
+      <h2><span class="badge badge-primary">3</span> Primeira Sprint</h2>
+      <div class="task">🗓️ <span class="highlight">Planejamento</span> semanal com equipe</div>
+      <div class="task">🛠️ Implementar controle básico de estoque</div>
+      <div class="task">🔄 <span class="highlight">Daily</span> às 9h para alinhamento</div>
+      <div class="task">✅ <span class="highlight">Review</span> com gerência e ajustes</div>
+    </div>
+
+    <!-- Etapa 4 -->
+    <div class="column">
+      <h2><span class="badge badge-primary">4</span> Aprimoramento</h2>
+      <div class="task">📈 Medir redução de perdas de estoque</div>
+      <div class="task">🛑 Eliminar gargalos no atendimento</div>
+      <div class="task">🔁 Refinar backlog com feedback dos vendedores</div>
+      <div class="task">🎯 Melhorar previsão de compras</div>
+    </div>
+  </div>
+</div>
+
+<!-- Página Kanban -->
+<div id="kanban-page" class="page container">
+  <button class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> Voltar</button>
+  
+  <div class="page-header">
+    <h1><i class="fas fa-tasks"></i> Quadro Kanban - Gestão SISA Tecidos</h1>
+    <p>Controle visual de estoque e pedidos</p>
+  </div>
+
+  <div class="kanban-board">
+    <div class="kanban-column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2><span class="badge badge-warning">A Fazer</span></h2>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task1">📦 Receber remessa de algodão cru</div>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task2">🧵 Organizar tecidos por cor</div>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task3">📞 Contactar fornecedor de seda</div>
+    </div>
+
+    <div class="kanban-column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2><span class="badge badge-primary">Em Andamento</span></h2>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task4">✂️ Cortar amostras para vitrine</div>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task5">📊 Atualizar planilha de estoque</div>
+    </div>
+
+    <div class="kanban-column" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2><span class="badge badge-success">Concluído</span></h2>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task6">✅ Etiquetar novos lotes</div>
+      <div class="kanban-task" draggable="true" ondragstart="drag(event)" id="task7">📦 Enviar pedido para cliente</div>
+    </div>
+  </div>
+</div>
+
+<!-- Página Workshop -->
+<div id="workshop-page" class="page container">
+  <button class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> Voltar</button>
+  
+  <div class="page-header">
+    <h1><i class="fas fa-chalkboard-teacher"></i> Mini Workshop Ágil</h1>
+    <p>Capacitação para equipe da SISA Tecidos</p>
+  </div>
+
+  <div class="workshop-section">
+    <h2><i class="fas fa-bullseye"></i> Objetivo</h2>
+    <p>Capacitar a equipe da SISA Tecidos nos conceitos básicos de Scrum e Kanban aplicados ao dia a dia da loja.</p>
+  </div>
+
+  <div class="workshop-section">
+    <h2><i class="fas fa-clock"></i> Duração: 2 horas</h2>
+    
+    <div class="activity">
+      <h3><i class="fas fa-info-circle"></i> 1. Introdução (20 min)</h3>
+      <p>• O que são metodologias ágeis</p>
+      <p>• Benefícios para o varejo de tecidos</p>
+      <p>• Diferença entre Scrum e Kanban</p>
+    </div>
+    
+    <div class="activity">
+      <h3><i class="fas fa-project-diagram"></i> 2. Dinâmica do Kanban (40 min)</h3>
+      <p>• Simulação de fluxo de pedidos</p>
+      <p>• Limites de trabalho em progresso</p>
+      <p>• Identificação de gargalos</p>
+    </div>
+    
+    <div class="activity">
+      <h3><i class="fas fa-users"></i> 3. Prática do Scrum (50 min)</h3>
+      <p>• Formação de times multifuncionais</p>
+      <p>• Planejamento de sprint semanal</p>
+      <p>• Demonstração de resultados</p>
+    </div>
+    
+    <div class="activity">
+      <h3><i class="fas fa-check-circle"></i> 4. Aplicação na SISA (10 min)</h3>
+      <p>• Definir primeiras ações concretas</p>
+      <p>• Comprometimento da equipe</p>
+    </div>
+  </div>
+</div>
+
+<!-- Página Estudo de Caso -->
+<div id="case-study-page" class="page container">
+  <button class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> Voltar</button>
+  
+  <div class="page-header">
+    <h1><i class="fas fa-book-open"></i> Estudo de Caso: Sistema de Gestão</h1>
+    <p>Implantação do novo sistema na SISA Tecidos usando Scrum</p>
+  </div>
+
+  <div class="section">
+    <h2><i class="fas fa-clipboard-list"></i> Visão Geral</h2>
+    <p>A SISA Tecidos implementou um novo sistema de gestão de estoque e pedidos usando Scrum durante 3 sprints de 2 semanas cada.</p>
+  </div>
+
+  <div class="section">
+    <h2><i class="fas fa-users-cog"></i> Papéis no Projeto</h2>
+    <ul>
+      <li><span class="role">Product Owner:</span> Carla (Gerente) - definia prioridades com base nas necessidades da loja</li>
+      <li><span class="role">Scrum Master:</span> Marcos (Supervisor) - facilitava reuniões e removia impedimentos</li>
+      <li><span class="role">Equipe:</span> 2 vendedores, 1 estoquista e 1 administrador</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><i class="fas fa-list-ol"></i> Backlog Inicial</h2>
+    <ul>
+      <li>Controle de entrada/saída de tecidos</li>
+      <li>Cadastro de fornecedores com histórico</li>
+      <li>Relatório de tecidos mais vendidos</li>
+      <li>Sistema de alerta para estoque baixo</li>
+      <li>Integração com sistema fiscal</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><i class="fas fa-calendar-alt"></i> Sprints</h2>
+
+    <div class="sprint">
+      <h3><i class="fas fa-play-circle" style="color: #4cc9f0;"></i> Sprint 1 – Cadastros Básicos</h3>
+      <ul>
+        <li>Cadastro de produtos com fotos</li>
+        <li>Organização por tipo (algodão, seda, etc)</li>
+        <li>Entrada básica de estoque</li>
+        <li><strong>Resultado:</strong> Sistema parcial implementado</li>
+      </ul>
+    </div>
+
+    <div class="sprint">
+      <h3><i class="fas fa-running" style="color: #4361ee;"></i> Sprint 2 – Controle de Pedidos</h3>
+      <ul>
+        <li>Registro de vendas com detalhes</li>
+        <li>Relatório de movimentação</li>
+        <li>Busca rápida por código/tecido</li>
+        <li><strong>Resultado:</strong> Redução de 30% no tempo de atendimento</li>
+      </ul>
+    </div>
+
+    <div class="sprint">
+      <h3><i class="fas fa-tachometer-alt" style="color: #f72585;"></i> Sprint 3 – Alertas e Relatórios</h3>
+      <ul>
+        <li>Alertas de estoque mínimo</li>
+        <li>Relatório de sazonalidade</li>
+        <li>Integração com planilha de compras</li>
+        <li><strong>Resultado:</strong> Redução de 25% em perdas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><i class="fas fa-chart-line"></i> Resultados e Lições</h2>
+    <ul>
+      <li>Melhoria de 40% na precisão do estoque</li>
+      <li>Equipe mais alinhada com metas semanais</li>
+      <li>Desafio: Resistência inicial à mudança</li>
+      <li>Próximos passos: Expandir para gestão de clientes</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Função para alternar entre páginas
+  function showPage(pageId) {
+    // Esconder todas as páginas
+    document.getElementById('home-page').style.display = 'none';
+    document.querySelectorAll('.page').forEach(page => {
+      page.style.display = 'none';
+    });
+    
+    // Mostrar a página selecionada
+    if(pageId === 'home-page') {
+      document.getElementById('home-page').style.display = 'block';
+    } else {
+      document.getElementById(pageId).style.display = 'block';
+    }
+    
+    // Rolagem para o topo
+    window.scrollTo(0, 0);
+  }
+
+  // Mostrar a página inicial por padrão
+  showPage('home-page');
+
+  // Funções para o Kanban (drag and drop)
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const task = document.getElementById(data);
+    
+    // Verificar se estamos soltando em uma coluna (não em outra tarefa)
+    if (ev.target.classList.contains('kanban-column') || 
+        ev.target.parentElement.classList.contains('kanban-column')) {
+      const targetColumn = ev.target.classList.contains('kanban-column') ? 
+                          ev.target : ev.target.parentElement;
+      targetColumn.appendChild(task);
+    }
+  }
+  
+  // Adicionar efeito de hover dinâmico
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card, .column, .kanban-column, .workshop-section, .section');
+    
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px)';
+        this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = '';
+        this.style.boxShadow = '';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
